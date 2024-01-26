@@ -3,8 +3,22 @@
  */
 
 import app from "../app";
-const debug = require("debug")("mdn-express-local-library-tutorial:server");
+const debug = require("debug")("mdn-express-local-library:server");
 import http from "http";
+import mongoose from "mongoose";
+
+mongoose.set("strictQuery", false);
+const mongoDB = process.env.MONGO_DB_CONNECTION;
+
+main().catch((err) => {
+  console.log(err);
+});
+async function main() {
+  if (!mongoDB) {
+    throw new Error("Missing mongoDB connection string");
+  }
+  await mongoose.connect(mongoDB);
+}
 
 /**
  * Get port from environment and store in Express.
