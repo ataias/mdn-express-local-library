@@ -1,0 +1,12 @@
+<h1>{{title}}</h1>
+{{#if book_list.length}}
+<ul>
+  {{#each book_list}}
+  <li>
+    <a href="{{this.url}}">{{this.title}}</a> {{this.author.name}}
+  </li>
+  {{/each}}
+</ul>
+{{else}}
+<h1>Unknown Author</h1>
+{{/if}}

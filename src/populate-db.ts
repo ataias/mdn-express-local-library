@@ -57,8 +57,8 @@ async function authorCreate(
     first_name: first_name,
     family_name: family_name,
   };
-  if (d_birth != false) authordetail.date_of_birth = d_birth;
-  if (d_death != false) authordetail.date_of_death = d_death;
+  if (d_birth !== false) authordetail.date_of_birth = d_birth;
+  if (d_death !== false) authordetail.date_of_death = d_death;
 
   const author = new Author(authordetail);
 
@@ -81,7 +81,7 @@ async function bookCreate(
     author: author,
     isbn: isbn,
   };
-  if (genre != false) bookdetail.genre = genre;
+  if (genre !== false) bookdetail.genre = genre;
 
   const book = new Book(bookdetail);
   await book.save();
@@ -100,8 +100,8 @@ async function bookInstanceCreate(
     book: book,
     imprint: imprint,
   };
-  if (due_back != false) bookinstancedetail.due_back = due_back;
-  if (status != false) bookinstancedetail.status = status;
+  if (due_back !== false) bookinstancedetail.due_back = due_back;
+  if (status !== false) bookinstancedetail.status = status;
 
   const bookinstance = new BookInstance(bookinstancedetail);
   await bookinstance.save();
