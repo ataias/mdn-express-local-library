@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import type { Document } from "mongoose";
 import { Author } from "./models/Author";
 import { Book } from "./models/Book";
 import { BookInstance } from "./models/BookInstance";
@@ -8,10 +9,10 @@ console.log(
   "This script populates some test books, authors, genres and bookinstances to your database.",
 );
 
-const genres = [];
-const authors = [];
-const books = [];
-const bookinstances = [];
+const genres: Document[] = [];
+const authors: Document[] = [];
+const books: Document[] = [];
+const bookinstances: Document[] = [];
 
 mongoose.set("strictQuery", false);
 
@@ -38,15 +39,24 @@ async function main() {
 // We pass the index to the ...Create functions so that, for example,
 // genre[0] will always be the Fantasy genre, regardless of the order
 // in which the elements of promise.all's argument complete.
-async function genreCreate(index, name) {
+async function genreCreate(index: number, name: string) {
   const genre = new Genre({ name: name });
   await genre.save();
   genres[index] = genre;
   console.log(`Added genre: ${name}`);
 }
 
-async function authorCreate(index, first_name, family_name, d_birth, d_death) {
-  const authordetail = { first_name: first_name, family_name: family_name };
+async function authorCreate(
+  index: number,
+  first_name: string,
+  family_name: string,
+  d_birth: string | false,
+  d_death: string | false,
+) {
+  const authordetail: AuthorDetail = {
+    first_name: first_name,
+    family_name: family_name,
+  };
   if (d_birth != false) authordetail.date_of_birth = d_birth;
   if (d_death != false) authordetail.date_of_death = d_death;
 
@@ -57,8 +67,15 @@ async function authorCreate(index, first_name, family_name, d_birth, d_death) {
   console.log(`Added author: ${first_name} ${family_name}`);
 }
 
-async function bookCreate(index, title, summary, isbn, author, genre) {
-  const bookdetail = {
+async function bookCreate(
+  index: number,
+  title: string,
+  summary: string,
+  isbn: string,
+  author: Document,
+  genre: Document[] | false,
+) {
+  const bookdetail: BookDetail = {
     title: title,
     summary: summary,
     author: author,
@@ -72,8 +89,14 @@ async function bookCreate(index, title, summary, isbn, author, genre) {
   console.log(`Added book: ${title}`);
 }
 
-async function bookInstanceCreate(index, book, imprint, due_back, status) {
-  const bookinstancedetail = {
+async function bookInstanceCreate(
+  index: number,
+  book: Document,
+  imprint: string,
+  due_back: string | false,
+  status: string | false,
+) {
+  const bookinstancedetail: BookInstanceDetail = {
     book: book,
     imprint: imprint,
   };
@@ -225,4 +248,26 @@ async function createBookInstances() {
     bookInstanceCreate(9, books[0], "Imprint XXX2", false, false),
     bookInstanceCreate(10, books[1], "Imprint XXX3", false, false),
   ]);
+}
+
+interface AuthorDetail {
+  first_name: string;
+  family_name: string;
+  date_of_birth?: string;
+  date_of_death?: string;
+}
+
+interface BookDetail {
+  title: string;
+  summary: string;
+  author: Document;
+  isbn: string;
+  genre?: Document[];
+}
+
+interface BookInstanceDetail {
+  book: Document;
+  imprint: string;
+  due_back?: string;
+  status?: string;
 }
