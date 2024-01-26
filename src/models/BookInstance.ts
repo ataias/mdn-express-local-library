@@ -1,5 +1,5 @@
-import { Schema, model } from "mongoose";
 import { DateTime } from "luxon";
+import { Schema, model } from "mongoose";
 
 const BookInstanceSchema = new Schema({
   book: { type: Schema.Types.ObjectId, ref: "Book", required: true }, // reference to the associated book

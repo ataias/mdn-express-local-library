@@ -1,9 +1,9 @@
 import asyncHandler from "express-async-handler";
+import { HttpError } from "../errors/HttpError";
 import { Author } from "../models/Author";
 import { Book } from "../models/Book";
 import { BookInstance } from "../models/BookInstance";
 import { Genre } from "../models/Genre";
-import { HttpError } from "../errors/HttpError";
 
 export const index = asyncHandler(async (_req, res, _next) => {
   const [

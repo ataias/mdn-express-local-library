@@ -1,13 +1,13 @@
 import asyncHandler from "express-async-handler";
-import { Genre } from "../models/Genre";
-import { Book } from "../models/Book";
 import { HttpError } from "../errors/HttpError";
+import { Book } from "../models/Book";
+import { Genre } from "../models/Genre";
 
 export const genreList = asyncHandler(async (_req, res, _next) => {
   const allGenres = await Genre.find().sort({ name: 1 }).exec();
   res.render("genre_list", {
     title: "Genre List",
-    genre_list: allGenres
+    genre_list: allGenres,
   });
 });
 
@@ -25,7 +25,7 @@ export const genreDetail = asyncHandler(async (req, res, next) => {
   res.render("genre_detail", {
     title: "Genre Detail",
     genre,
-    genre_books: booksInGenre
+    genre_books: booksInGenre,
   });
 });
 
