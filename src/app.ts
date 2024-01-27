@@ -1,12 +1,15 @@
 import cookieParser from "cookie-parser";
 import type { NextFunction, Request, Response } from "express";
 import express from "express";
-import registerHandlebarsHelpers from "handlebars-helpers";
+import makeHandlebarsHelpers from "handlebars-helpers";
+import hbs from "hbs";
 import createError from "http-errors";
 import logger from "morgan";
 import path from "node:path";
 
-registerHandlebarsHelpers();
+const helpers = makeHandlebarsHelpers();
+hbs.registerHelper("eq", helpers.eq);
+hbs.registerHelper("or", helpers.or);
 
 import catalogRouter from "./routes/catalog";
 import indexRouter from "./routes/index";

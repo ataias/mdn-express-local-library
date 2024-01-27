@@ -1,0 +1,85 @@
+<h1>{{title}}</h1>
+<form method="post">
+    <div class="form-group">
+        <label for="book">Book:</label>
+        <select
+            name="book"
+            id="book"
+            class="form-control"
+            required="true"
+        >
+            <option value="">--Please select a book--</option>
+            {{#each book_list}}
+                {{#eq selected_book this.id}}
+                    <option
+                        value="{{this._id}}"
+                        selected
+                    >{{this.title}}</option>
+            {{else}}
+                <option value="{{this._id}}">{{this.title}}</option>
+                {{/eq}}
+            {{/each}}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="imprint">Imprint:</label>
+        <input
+            type="text"
+            id="imprint"
+            class="form-control"
+            placeholder="Publisher and date information"
+            name="imprint"
+            required="true"
+            value="{{#if book_instance}} {{book_instance.imprint}} {{/if}}"
+        >
+    </div>
+    <div class="form-group">
+        <label for="due_back">Date when book available:</label>
+        <input
+            type="date"
+            id="due_back"
+            class="form-control"
+            name="due_back"
+            value="{{#if book_instance}} {{book_instance.due_back_yyyy_mm_dd}} {{/if}}"
+        >
+    </div>
+    <div class="form-group">
+        <label for="status">Status:</label>
+        <select
+            name="status"
+            id="status"
+            class="form-control"
+            required="true"
+        >
+            <option value="">--Please select a status--</option>
+            {{#each statuses}}
+                {{#if book_instance}}
+                    {{#eq book_instance.status this}}
+                        <option
+                            value="{{this}}"
+                            selected="true"
+                        >{{this}}
+                        </option>
+                {{else}}
+                    <option value="{{this}}">{{this}}</option>
+                    {{/eq}}
+                {{else}}
+                    <option value="{{this}}">{{this}}</option>
+                {{/if}}
+            {{/each}}
+        </select>
+    </div>
+    <button
+        class="btn btn-primary"
+        type="submit"
+    >Submit</button>
+
+    {{#if errors}}
+        <ul>
+            {{#each errors}}
+                <li>{{this.msg}}</li>
+            {{/each}}
+        </ul>
+    {{/if}}
+</form>
