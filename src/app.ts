@@ -1,9 +1,12 @@
-import path from "node:path";
 import cookieParser from "cookie-parser";
-import express from "express";
 import type { NextFunction, Request, Response } from "express";
+import express from "express";
+import registerHandlebarsHelpers from "handlebars-helpers";
 import createError from "http-errors";
 import logger from "morgan";
+import path from "node:path";
+
+registerHandlebarsHelpers();
 
 import catalogRouter from "./routes/catalog";
 import indexRouter from "./routes/index";

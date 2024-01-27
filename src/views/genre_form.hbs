@@ -3,15 +3,25 @@
 <form method="POST">
   <div class="form-group">
     <label for="name">Genre: </label>
-    <input id="name" class="form-control" type="text" placeholder="Fantasy, Poetry etc." name="name" required="true"
-      value="{{#if genre}} {{genre.name}} {{/if}}">
-    <button class="btn btn-primary" type="submit">Submit</button>
+    <input
+      id="name"
+      class="form-control"
+      type="text"
+      placeholder="Fantasy, Poetry etc."
+      name="name"
+      required="true"
+      value="{{#if genre}} {{genre.name}} {{/if}}"
+    >
+    <button
+      class="btn btn-primary"
+      type="submit"
+    >Submit</button>
   </div>
   {{#if errors}}
-  <ul>
-    {{#each errors}}
-    <li>{{this.msg}}</li>
-    {{/each}}
-  </ul>
+    <ul>
+      {{#each errors}}
+        <li>{{this.msg}}</li>
+      {{/each}}
+    </ul>
   {{/if}}
 </form>

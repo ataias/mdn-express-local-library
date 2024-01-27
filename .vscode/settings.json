@@ -1,5 +1,8 @@
 {
     "cSpell.words": [
         "virtuals"
-    ]
+    ],
+    "html.format.templating": true,
+    "html.format.wrapAttributes": "force-expand-multiline",
+    "html.format.indentHandlebars": true
 }
