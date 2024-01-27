@@ -15,6 +15,42 @@ const AuthorSchema = new Schema(
           return `/catalog/author/${this._id}`;
         },
       },
+      date_of_birth_formatted: {
+        get() {
+          if (!this.date_of_birth) {
+            return "";
+          }
+          return DateTime.fromJSDate(this.date_of_birth).toLocaleString(
+            DateTime.DATE_MED,
+          );
+        },
+      },
+      date_of_death_formatted: {
+        get() {
+          if (!this.date_of_death) {
+            return "";
+          }
+          return DateTime.fromJSDate(this.date_of_death).toLocaleString(
+            DateTime.DATE_MED,
+          );
+        },
+      },
+      life_span: {
+        get() {
+          if (!this.date_of_birth) {
+            return "";
+          }
+          const date_of_birth = DateTime.fromJSDate(
+            this.date_of_birth,
+          ).toLocaleString(DateTime.DATE_MED);
+          const date_of_death = this.date_of_death
+            ? DateTime.fromJSDate(this.date_of_death).toLocaleString(
+                DateTime.DATE_MED,
+              )
+            : "";
+          return `(${date_of_birth} - ${date_of_death})`;
+        },
+      },
     },
   },
 );
@@ -28,24 +64,6 @@ AuthorSchema.virtual("name").get(function () {
   }
 
   return fullname;
-});
-
-AuthorSchema.virtual("date_of_birth_formatted").get(function () {
-  if (!this.date_of_birth) {
-    return "";
-  }
-  return DateTime.fromJSDate(this.date_of_birth).toLocaleString(
-    DateTime.DATE_MED,
-  );
-});
-
-AuthorSchema.virtual("date_of_death_formatted").get(function () {
-  if (!this.date_of_death) {
-    return "";
-  }
-  return DateTime.fromJSDate(this.date_of_death).toLocaleString(
-    DateTime.DATE_MED,
-  );
 });
 
 export const Author = model("Author", AuthorSchema);
