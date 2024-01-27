@@ -1,12 +1,23 @@
 import { DateTime } from "luxon";
 import { Schema, model } from "mongoose";
 
-const AuthorSchema = new Schema({
-  first_name: { type: String, required: true, maxLength: 100 },
-  family_name: { type: String, required: true, maxLength: 100 },
-  date_of_birth: { type: Date },
-  date_of_death: { type: Date },
-});
+const AuthorSchema = new Schema(
+  {
+    first_name: { type: String, required: true, maxLength: 100 },
+    family_name: { type: String, required: true, maxLength: 100 },
+    date_of_birth: { type: Date },
+    date_of_death: { type: Date },
+  },
+  {
+    virtuals: {
+      url: {
+        get() {
+          return `/catalog/author/${this._id}`;
+        },
+      },
+    },
+  },
+);
 
 AuthorSchema.virtual("name").get(function () {
   // To avoid errors in cases where an author does not have either a family name or first name
@@ -17,10 +28,6 @@ AuthorSchema.virtual("name").get(function () {
   }
 
   return fullname;
-});
-
-AuthorSchema.virtual("url").get(function () {
-  return `/catalog/author/${this._id}`;
 });
 
 AuthorSchema.virtual("date_of_birth_formatted").get(function () {

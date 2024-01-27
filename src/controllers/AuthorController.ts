@@ -1,4 +1,5 @@
 import asyncHandler from "express-async-handler";
+import { body, validationResult } from "express-validator";
 import { HttpError } from "../errors/HttpError";
 import { Author } from "../models/Author";
 import { Book } from "../models/Book";
@@ -31,12 +32,54 @@ export const authorDetail = asyncHandler(async (req, res, next) => {
 });
 
 export const authorCreateGet = asyncHandler(async (_req, res, _next) => {
-  res.send("NOT IMPLEMENTED: Author Create GET");
+  res.render("author_form", { title: "Create Author" });
 });
 
-export const authorCreatePost = asyncHandler(async (_req, res, _next) => {
-  res.send("NOT IMPLEMENTED: Author Create POST");
-});
+export const authorCreatePost = [
+  body("first_name")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage("First name must be specified.")
+    .isAlphanumeric()
+    .withMessage("First name has non-alphanumeric characters."),
+  body("family_name")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage("Family name must be specified.")
+    .isAlphanumeric()
+    .withMessage("Family name has non-alphanumeric characters."),
+  body("date_of_birth", "Invalid date of birth")
+    .optional({ values: "falsy" })
+    .isISO8601()
+    .toDate(),
+  body("date_of_death", "Invalid date of death")
+    .optional({ values: "falsy" })
+    .isISO8601()
+    .toDate(),
+  asyncHandler(async (req, res, _next) => {
+    const errors = validationResult(req);
+    const author = new Author({
+      first_name: req.body.first_name,
+      family_name: req.body.family_name,
+      date_of_birth: req.body.date_of_birth,
+      date_of_death: req.body.date_of_death,
+    });
+
+    if (!errors.isEmpty()) {
+      res.render("author_form", {
+        title: "Create Author",
+        author,
+        errors: errors.array(),
+      });
+      return;
+    }
+
+    await author.save();
+    res.redirect(author.url);
+  }),
+];
 
 export const authorDeleteGet = asyncHandler(async (_req, res, _next) => {
   res.send("NOT IMPLEMENTED: Author Delete GET");
